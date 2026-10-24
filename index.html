@@ -76,6 +76,17 @@ body{margin:0;min-height:100vh;overflow-x:hidden;font-size:18px;background-image
 body::before{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;opacity:.2;filter:blur(30px);background:repeating-radial-gradient(ellipse at 40% 50%,rgba(255,255,255,.5) 0 2%,transparent 4% 10%);animation:fog 18s ease-in-out infinite alternate}
 @keyframes fog{to{transform:translate3d(8%,3%,0) scale(1.08)}}
 .wrap{position:relative}
+.effects-layer{position:fixed;inset:0;z-index:20;pointer-events:none;overflow:hidden;contain:paint}
+.mist{position:absolute;width:78vw;height:190px;border-radius:50%;filter:blur(34px);opacity:.2;background:radial-gradient(ellipse,rgba(225,207,255,.9),rgba(127,55,153,.35) 42%,transparent 72%)}
+.mist.one{left:-55vw;top:24%;animation:mistPass 17s ease-in-out infinite alternate}.mist.two{right:-58vw;top:68%;animation:mistPassBack 21s ease-in-out infinite alternate}
+@keyframes mistPass{to{transform:translateX(105vw) scale(1.2)}}@keyframes mistPassBack{to{transform:translateX(-100vw) scale(1.12)}}
+.flyer{position:absolute;left:-12vw;font-size:clamp(28px,4vw,54px);filter:drop-shadow(0 0 9px #B45AFF);opacity:.82;animation:flyAcross 13s linear infinite}
+.flyer.f1{top:3%}.flyer.f2{top:61%;animation-duration:17s;animation-delay:-7s;transform:scale(.72)}.flyer.f3{top:91%;animation-duration:20s;animation-delay:-13s;transform:scale(.58)}
+@keyframes flyAcross{0%{translate:-8vw 0;rotate:-8deg}25%{translate:28vw 18px;rotate:8deg}50%{translate:58vw -12px;rotate:-5deg}75%{translate:88vw 22px;rotate:9deg}100%{translate:122vw 0;rotate:-7deg}}
+.watcher{position:absolute;right:2vw;top:48%;font-size:clamp(44px,6vw,76px);opacity:.68;filter:drop-shadow(0 0 14px #EEE3FF);animation:haunt 6s ease-in-out infinite alternate}
+@keyframes haunt{to{transform:translate(-28px,42px) rotate(-7deg);opacity:.9}}
+.bubble{position:absolute;bottom:-50px;width:18px;height:18px;border:3px solid #B8FF39;border-radius:50%;background:rgba(184,255,57,.18);box-shadow:0 0 13px #B8FF39;animation:bubbleUp 9s ease-in infinite}.bubble.b1{left:3%;animation-delay:-2s}.bubble.b2{left:8%;width:28px;height:28px;animation-delay:-6s;animation-duration:12s}.bubble.b3{right:4%;animation-delay:-4s;animation-duration:10s}.bubble.b4{right:9%;width:11px;height:11px;animation-delay:-8s}
+@keyframes bubbleUp{0%{translate:0 0;opacity:0}12%{opacity:.75}55%{translate:18px -52vh}100%{translate:-10px -108vh;opacity:0}}
 .spooky-sky{position:absolute;inset:-18px 0 auto;pointer-events:none;z-index:0;color:#C78AFF;font-size:clamp(24px,4vw,48px);letter-spacing:.3em;display:flex;justify-content:flex-end;gap:clamp(18px,4vw,54px);opacity:.8}
 .spooky-sky span{display:inline-block;filter:drop-shadow(0 0 8px #9A42FF);animation:float 4s ease-in-out infinite alternate}.spooky-sky span:nth-child(2){animation-delay:-1.7s}.spooky-sky span:nth-child(3){animation-delay:-3s}
 @keyframes float{to{transform:translateY(12px) rotate(5deg)}}
@@ -86,6 +97,8 @@ h1{font-weight:400;font-size:clamp(38px,6vw,66px);color:#FF8A1F;letter-spacing:.
 nav.views button{min-height:46px;font-size:16px;border:2px solid var(--line);background:#171021;border-radius:12px}nav.views button[aria-pressed="true"]{border-color:var(--pin);background:#39182A;color:var(--ink);box-shadow:0 0 15px rgba(255,106,0,.45)}
 .figure{border:3px solid #8E43B0;border-radius:18px;box-shadow:0 0 30px rgba(142,67,176,.28)}.figure::after{content:"🕸️";position:absolute;right:-5px;top:-14px;z-index:4;font-size:58px;opacity:.68;pointer-events:none;filter:grayscale(1) brightness(2)}
 .pin span{position:relative;width:32px;height:30px;border-radius:47% 47% 43% 43%;background:linear-gradient(90deg,#D94C00,#FF8A00 48%,#D94C00);box-shadow:0 0 9px rgba(255,106,0,.75),0 2px 6px rgba(0,0,0,.55)}.pin span::before{content:"";position:absolute;width:7px;height:5px;border-radius:2px 2px 0 0;background:#75A928;top:-7px;left:10px}.pin[aria-current="true"] span{background:var(--leaf);color:#111600;box-shadow:0 0 18px rgba(184,255,57,.75)}
+.pin[aria-current="true"] span{animation:pumpkinPulse 1.9s ease-in-out infinite}.views button[aria-pressed="true"]{animation:buttonGlow 2.6s ease-in-out infinite}
+@keyframes pumpkinPulse{50%{transform:scale(1.3);filter:brightness(1.25)}}@keyframes buttonGlow{50%{box-shadow:0 0 24px rgba(255,106,0,.8)}}
 .card{background:linear-gradient(150deg,rgba(35,19,49,.96),rgba(19,13,29,.98));border:2px solid var(--line);box-shadow:inset 0 0 24px rgba(128,48,164,.12)}.card h2{font-weight:400;font-size:34px;color:#FFB347;letter-spacing:.025em}
 .list button{min-height:48px;font-size:16px;border:2px solid #55316C;background:#1B1128;border-radius:10px}.btn{min-height:46px;color:#111600;box-shadow:0 0 13px rgba(184,255,57,.35)}
 .panel-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}.listen{background:#FF7A16;color:#1A0700;box-shadow:0 0 13px rgba(255,106,0,.45)}.legend{margin:0;padding:10px 14px;border-left:5px solid var(--pin);background:#25102D;border-radius:8px;color:var(--muted)}
@@ -93,6 +106,7 @@ nav.views button{min-height:46px;font-size:16px;border:2px solid var(--line);bac
 button:focus-visible{outline:4px solid #E5FF73!important;outline-offset:3px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 :root[data-motion="off"] *,:root[data-motion="off"] *::before,:root[data-motion="off"] *::after{animation:none!important;transition:none!important}
+:root[data-motion="off"] .effects-layer{opacity:.28}
 
 /* Il tema continua in tutto il gioco, non solo nell'intestazione. */
 header{position:relative;padding:16px 18px 18px;border:2px solid #67337F;border-radius:18px;background:linear-gradient(115deg,rgba(40,13,55,.92),rgba(20,8,28,.72));box-shadow:inset 0 -8px 18px rgba(255,106,0,.07),0 0 28px rgba(106,36,143,.2)}
@@ -120,6 +134,12 @@ footer{padding:16px 18px;border-top:2px dashed #74418C;background:rgba(9,5,18,.5
 @media (max-width:600px){header{padding:14px}.stage{padding:8px}.stage::before{left:18px}.spooky-sky{display:none}.card:has(.list)::after{display:none}}
 </style>
 
+<div class="effects-layer" aria-hidden="true">
+  <i class="mist one"></i><i class="mist two"></i>
+  <span class="flyer f1">🦇</span><span class="flyer f2">🦇</span><span class="flyer f3">🦇</span>
+  <span class="watcher">👻</span>
+  <i class="bubble b1"></i><i class="bubble b2"></i><i class="bubble b3"></i><i class="bubble b4"></i>
+</div>
 <div class="wrap">
   <div class="spooky-sky" aria-hidden="true"><span>🦇</span><span>👻</span><span>🦇</span></div>
   <header>
@@ -298,7 +318,7 @@ function burst(el, good){
 
 function renderViews(){
   $('views').innerHTML = VIEWS.map(v => `<button data-v="${v.id}" aria-label="${esc(v.label)}" aria-pressed="${v===view}"><span class="view-icon" aria-hidden="true">${ICONS[v.id]||'🦇'}</span>${esc(v.label)}</button>`).join('');
-  $('views').querySelectorAll('button').forEach(b => b.onclick = () => { view = VIEWS.find(v => v.id === b.dataset.v); current = -1; if (mode==='quiz') startQuiz(); render(); });
+  $('views').querySelectorAll('button').forEach(b => b.onclick = () => { burst(b,true); view = VIEWS.find(v => v.id === b.dataset.v); current = -1; if (mode==='quiz') startQuiz(); render(); });
 }
 function render(){
   renderViews();
@@ -325,15 +345,15 @@ function render(){
     b.innerHTML = `<span aria-hidden="true">${i+1}</span>`;
     b.setAttribute('aria-label', mode === 'quiz' ? 'Punto ' + (i + 1) : it[2]);
     if (i === current && mode === 'explore') b.setAttribute('aria-current', 'true');
-    b.onclick = () => mode === 'explore' ? select(i) : answer(i, b);
+    b.onclick = () => mode === 'explore' ? select(i, b) : answer(i, b);
     fig.appendChild(b);
   });
   $('stage').classList.toggle('quizmode', mode === 'quiz');
   $('list').innerHTML = view.items.map((it, i) => `<li><button data-i="${i}" ${i===current?'aria-current="true"':''}><span>${i+1}</span>${esc(it[2])}</button></li>`).join('');
-  $('list').querySelectorAll('button').forEach(b => b.onclick = () => { if (mode !== 'explore') setMode('explore'); select(+b.dataset.i); });
+  $('list').querySelectorAll('button').forEach(b => b.onclick = () => { if (mode !== 'explore') setMode('explore'); select(+b.dataset.i, b); });
   mode === 'explore' ? renderPanel() : renderQuiz();
 }
-function select(i){ current = i; render(); }
+function select(i, el){ if (el) burst(el,true); current = i; render(); }
 function renderPanel(){
   if (current < 0){
     const spoken = `${view.label}. ${VIBES[view.id]} ${view.intro}. Tocca una zucca numerata o un nome nel grimorio.`;

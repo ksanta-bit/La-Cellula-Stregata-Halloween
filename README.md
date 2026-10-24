@@ -1,6 +1,6 @@
 # La cellula stregata
 
-Versione indipendente, accessibile e a tema Halloween del gioco didattico sulla cellula vegetale.
+Versione indipendente e a tema Halloween del gioco didattico sulla cellula vegetale.
 
 Materiale di Agrobiologia per le classi prime, a cura di **Gianluca Simonetti** – IIS “8 Marzo – K. Lorenz”, Mirano.
 Riferimento: *Viridis*, Modulo 3 “Botanica generale e sistematica”, Unità 1 “La cellula e i tessuti vegetali”, pp. 155-169.

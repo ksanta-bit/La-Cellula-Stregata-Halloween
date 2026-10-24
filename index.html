@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>La cellula stregata · Halloween</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="theme-color" content="#090512">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Creepster&display=swap">
+<style>
+/* Layout: tavola da laboratorio — a sinistra l'immagine con i punti cliccabili, a destra la scheda dell'organello; sotto, le schede delle viste ingrandite */
+:root{
+  --bg:#F3F6EE; --surface:#FFFFFF; --ink:#17342A; --text:#2A3D34; --muted:#5A6E64;
+  --line:#CFDCD0; --leaf:#2F6B4F; --leaf-soft:#E3EDD9; --pin:#C2612C; --pin-ring:#FFFFFF;
+  --ok:#2F6B4F; --ok-soft:#DDEFD9; --ko:#A63A3A; --ko-soft:#F6DEDA;
+  --display:'Fredoka', 'Trebuchet MS', Arial, sans-serif;
+  --body:'Nunito Sans', Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111C17; --surface:#18271F; --ink:#EAF2E6; --text:#D3E0D6; --muted:#9AB0A3;
+  --line:#2C4237; --leaf:#8CC79F; --leaf-soft:#20372B; --pin:#E58A55; --pin-ring:#111C17;
+  --ok:#8CC79F; --ok-soft:#1F3A2B; --ko:#F09A8E; --ko-soft:#3D2420; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111C17; --surface:#18271F; --ink:#EAF2E6; --text:#D3E0D6; --muted:#9AB0A3;
+  --line:#2C4237; --leaf:#8CC79F; --leaf-soft:#20372B; --pin:#E58A55; --pin-ring:#111C17;
+  --ok:#8CC79F; --ok-soft:#1F3A2B; --ko:#F09A8E; --ko-soft:#3D2420; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:17px;line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:24px 48px}
+.wrap{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px 24px}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,4vw,42px);line-height:1.1;color:var(--ink);margin:0;text-wrap:balance}
+.sub{margin:4px 0 0;color:var(--muted);max-width:62ch}
+.modes{display:flex;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px}
+.modes button{font:inherit;font-weight:700;border:0;background:transparent;color:var(--text);padding:8px 16px;border-radius:999px;cursor:pointer}
+.modes button[aria-pressed="true"]{background:var(--leaf);color:var(--bg)}
+nav.views{display:flex;flex-wrap:wrap;gap:8px}
+nav.views button{font:inherit;font-weight:700;font-size:15px;border:1px solid var(--line);background:var(--surface);color:var(--text);padding:8px 14px;border-radius:10px;cursor:pointer}
+nav.views button[aria-pressed="true"]{border-color:var(--leaf);background:var(--leaf-soft);color:var(--ink)}
+.stage{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:860px){.stage{grid-template-columns:1fr}}
+.figure{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.figure img{display:block;width:100%;height:auto}
+.pin{position:absolute;z-index:3;transform:translate(-50%,-50%);width:44px;height:44px;border:0;background:transparent;color:#FFFFFF;
+  font:800 14px/1 var(--body);display:grid;place-items:center;cursor:pointer;padding:0}
+.pin span{width:30px;height:30px;border-radius:50%;border:3px solid var(--pin-ring);background:var(--pin);display:grid;place-items:center;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.pin:hover span{transform:scale(1.12)}
+.pin:focus-visible{outline:3px solid var(--leaf);outline-offset:2px}
+.pin[aria-current="true"] span{background:var(--leaf);transform:scale(1.18)}
+.pin.ok span{background:var(--ok)} .pin.ko span{background:var(--ko)}
+.quizmode .pin span{color:transparent}
+.annotation-layer{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;overflow:visible}
+.annotation-layer line{stroke:var(--pin);stroke-width:.65;stroke-dasharray:1.5 1.2;vector-effect:non-scaling-stroke}
+.annotation-layer circle{fill:var(--pin);stroke:var(--pin-ring);stroke-width:.45;vector-effect:non-scaling-stroke}
+.annotation-layer ellipse{fill:color-mix(in srgb,var(--pin) 12%,transparent);stroke:var(--pin);stroke-width:.7;stroke-dasharray:2 1.5;vector-effect:non-scaling-stroke}
+@media (prefers-reduced-motion:reduce){.pin{transition:none}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--leaf);margin:0}
+.card h2{font-family:var(--display);font-weight:600;font-size:28px;line-height:1.15;color:var(--ink);margin:0;text-wrap:balance}
+.row{display:flex;flex-direction:column;gap:2px}
+.row b{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.row p{margin:0}
+.book{font-size:15px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px;margin:0}
+.list{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px}
+.list button{font:inherit;font-size:15px;text-align:left;width:100%;border:1px solid var(--line);background:var(--surface);color:var(--text);padding:7px 10px;border-radius:8px;cursor:pointer;display:flex;gap:8px;align-items:center}
+.list button span{display:inline-grid;place-items:center;min-width:24px;height:24px;border-radius:50%;background:var(--pin);color:#FFFFFF;font-weight:800;font-size:12px}
+.list button[aria-current="true"]{border-color:var(--leaf);background:var(--leaf-soft)}
+.quiz-q{font-family:var(--display);font-size:24px;color:var(--ink);margin:0}
+.feedback{margin:0;padding:10px 12px;border-radius:10px;font-weight:700}
+.feedback.ok{background:var(--ok-soft);color:var(--ok)} .feedback.ko{background:var(--ko-soft);color:var(--ko)}
+.score{font-variant-numeric:tabular-nums;color:var(--muted);margin:0}
+.btn{font:inherit;font-weight:800;border:0;background:var(--leaf);color:var(--bg);padding:10px 16px;border-radius:10px;cursor:pointer;align-self:start}
+.hint{color:var(--muted);font-size:15px;margin:0}
+footer{color:var(--muted);font-size:14px}
+
+/* Edizione Halloween: forte nell'atmosfera, calma nei movimenti e leggibile. */
+:root{--bg:#090512;--surface:#181024;--ink:#FFF2BF;--text:#F8F0FF;--muted:#D7C4E8;--line:#663B82;--leaf:#B8FF39;--leaf-soft:#2B173D;--pin:#FF6A00;--pin-ring:#FFF5D6;--ok:#B8FF39;--ok-soft:#20360F;--ko:#FF7396;--ko-soft:#421328;--display:'Creepster','Trebuchet MS',fantasy;--body:'Atkinson Hyperlegible',Arial,sans-serif;color-scheme:dark}
+body{margin:0;min-height:100vh;overflow-x:hidden;font-size:18px;background-image:radial-gradient(circle at 12% 8%,#4E1766 0,transparent 27%),radial-gradient(circle at 88% 25%,#4C2100 0,transparent 24%),linear-gradient(145deg,#06030B,#13061D 55%,#07120C)}
+body::before{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;opacity:.2;filter:blur(30px);background:repeating-radial-gradient(ellipse at 40% 50%,rgba(255,255,255,.5) 0 2%,transparent 4% 10%);animation:fog 18s ease-in-out infinite alternate}
+@keyframes fog{to{transform:translate3d(8%,3%,0) scale(1.08)}}
+.wrap{position:relative}
+.spooky-sky{position:absolute;inset:-18px 0 auto;pointer-events:none;z-index:0;color:#C78AFF;font-size:clamp(24px,4vw,48px);letter-spacing:.3em;display:flex;justify-content:flex-end;gap:clamp(18px,4vw,54px);opacity:.8}
+.spooky-sky span{display:inline-block;filter:drop-shadow(0 0 8px #9A42FF);animation:float 4s ease-in-out infinite alternate}.spooky-sky span:nth-child(2){animation-delay:-1.7s}.spooky-sky span:nth-child(3){animation-delay:-3s}
+@keyframes float{to{transform:translateY(12px) rotate(5deg)}}
+h1{font-weight:400;font-size:clamp(38px,6vw,66px);color:#FF8A1F;letter-spacing:.035em;text-shadow:0 0 8px #FF6A00,0 3px 0 #4E1766}
+.pumpkin-line{color:var(--ink);font-weight:700;margin:.25rem 0 0}.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-end}
+.tool{min-height:46px;font:inherit;font-weight:700;border:2px solid var(--line);background:#21102F;color:var(--text);padding:8px 14px;border-radius:12px;cursor:pointer}.tool:hover,.tool:focus-visible{border-color:var(--leaf);box-shadow:0 0 14px rgba(184,255,57,.35)}
+.modes button{min-height:44px}.modes button[aria-pressed="true"]{background:var(--leaf);color:#111600;box-shadow:0 0 14px rgba(184,255,57,.5)}
+nav.views button{min-height:46px;font-size:16px;border:2px solid var(--line);background:#171021;border-radius:12px}nav.views button[aria-pressed="true"]{border-color:var(--pin);background:#39182A;color:var(--ink);box-shadow:0 0 15px rgba(255,106,0,.45)}
+.figure{border:3px solid #8E43B0;border-radius:18px;box-shadow:0 0 30px rgba(142,67,176,.28)}.figure::after{content:"🕸️";position:absolute;right:-5px;top:-14px;z-index:4;font-size:58px;opacity:.68;pointer-events:none;filter:grayscale(1) brightness(2)}
+.pin span{position:relative;width:32px;height:30px;border-radius:47% 47% 43% 43%;background:linear-gradient(90deg,#D94C00,#FF8A00 48%,#D94C00);box-shadow:0 0 9px rgba(255,106,0,.75),0 2px 6px rgba(0,0,0,.55)}.pin span::before{content:"";position:absolute;width:7px;height:5px;border-radius:2px 2px 0 0;background:#75A928;top:-7px;left:10px}.pin[aria-current="true"] span{background:var(--leaf);color:#111600;box-shadow:0 0 18px rgba(184,255,57,.75)}
+.card{background:linear-gradient(150deg,rgba(35,19,49,.96),rgba(19,13,29,.98));border:2px solid var(--line);box-shadow:inset 0 0 24px rgba(128,48,164,.12)}.card h2{font-weight:400;font-size:34px;color:#FFB347;letter-spacing:.025em}
+.list button{min-height:48px;font-size:16px;border:2px solid #55316C;background:#1B1128;border-radius:10px}.btn{min-height:46px;color:#111600;box-shadow:0 0 13px rgba(184,255,57,.35)}
+.panel-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}.listen{background:#FF7A16;color:#1A0700;box-shadow:0 0 13px rgba(255,106,0,.45)}.legend{margin:0;padding:10px 14px;border-left:5px solid var(--pin);background:#25102D;border-radius:8px;color:var(--muted)}
+.burst{position:fixed;z-index:99;pointer-events:none;font-size:26px;animation:burst 1.05s ease-out forwards}@keyframes burst{0%{opacity:1;transform:translate(0,0) scale(.6) rotate(0)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.4) rotate(35deg)}}
+button:focus-visible{outline:4px solid #E5FF73!important;outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+:root[data-motion="off"] *,:root[data-motion="off"] *::before,:root[data-motion="off"] *::after{animation:none!important;transition:none!important}
+</style>
+
+<div class="wrap">
+  <div class="spooky-sky" aria-hidden="true"><span>🦇</span><span>👻</span><span>🦇</span></div>
+  <header>
+    <div>
+      <h1>La cellula stregata</h1>
+      <p class="pumpkin-line">🎃 Il laboratorio di Halloween della cellula vegetale 🧪</p>
+      <p class="sub">Tocca una zucca numerata: scopri che cos’è e a cosa serve. I termini sono quelli del libro Viridis (Modulo 3, Unità 1).</p>
+    </div>
+    <div class="tools">
+      <button class="tool" id="motion" aria-pressed="true">✨ Effetti attivi</button>
+      <div class="modes" role="group" aria-label="Modalità">
+        <button id="m-explore" aria-pressed="true">🔍 Esplora</button>
+        <button id="m-quiz" aria-pressed="false">🕯️ Sfida da brivido</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="views" aria-label="Viste" id="views"></nav>
+
+  <div class="stage" id="stage">
+    <div class="figure" id="figure"><img id="img" alt=""></div>
+    <div class="card" id="panel" aria-live="polite"></div>
+  </div>
+
+  <div class="card">
+    <p class="eyebrow">Il grimorio delle strutture</p>
+    <ul class="list" id="list"></ul>
+  </div>
+
+  <p class="legend"><b>Come leggere la mappa:</b> la linea unisce la zucca alla struttura; il contorno tratteggiato indica una zona diffusa, come citoplasma, stroma o matrice.</p>
+
+  <footer><b>La cellula stregata · edizione Halloween accessibile</b> · App di Gianluca Simonetti · IIS “8 Marzo – K. Lorenz”, Mirano · Agrobiologia, classi prime.<br>Membrana e pompa sodio-potassio: approfondimento di Biologia; nelle cellule vegetali la pompa principale è la pompa protonica (H⁺). Riferimento: Viridis, Modulo 3 – Botanica generale e sistematica, Unità 1 “La cellula e i tessuti vegetali”, pp. 155-161. Illustrazioni del percorso introduttivo.</footer>
+</div>
+
+<script>
+const VIEWS = [
+ {id:'panorama', label:'Tutta la cellula', img:'img/01_cellula_vegetale_panorama.jpg', alt:'Cellula vegetale in sezione',
+  intro:'Una cellula del parenchima clorofilliano di una foglia, aperta come una scatola. Ha tutto ciò che hanno le cellule eucariotiche, più tre cose speciali: parete, grande vacuolo e plastidi.',
+  items:[
+   [6,64,'Parete cellulare','Involucro rigido esterno alla membrana plasmatica, fatto di microfibrille di cellulosa immerse in emicellulose, pectine e proteine strutturali.','Sostiene e protegge la cellula, le dà una forma definita, fa passare acqua e soluti ed è responsabile del turgore cellulare.','p. 157'],
+   [15,58,'Membrana plasmatica (plasmalemma)','Sottile doppio strato di fosfolipidi con proteine, subito sotto la parete.','Controlla che cosa entra ed esce dalla cellula.','p. 157'],
+   [20,12,'Nucleo','Grande organello avvolto da una doppia membrana con pori (involucro nucleare). Contiene il DNA.','Custodisce le istruzioni della cellula e ne coordina tutte le attività.',''],
+   [28,20,'Nucleolo','Zona più scura dentro il nucleo.','Prepara le parti che formeranno i ribosomi.',''],
+   [30,34,'Reticolo endoplasmatico ruvido','Sacchetti appiattiti collegati al nucleo, coperti di ribosomi (per questo è “ruvido”, o rugoso).','Costruisce le proteine destinate ad altri organelli, alle membrane o all’esterno.','p. 159'],
+   [52,15,'Reticolo endoplasmatico liscio','Rete di tubicini senza ribosomi.','Costruisce i lipidi (grassi) e partecipa alla detossificazione.',''],
+   [87,19,'Apparato di Golgi','Pila di sacchetti appiattiti e curvi.','Modifica, smista e impacchetta le sostanze in vescicole dirette alla membrana, alla parete o al vacuolo.','p. 159',{target:[82,30]}],
+   [87,36,'Vescicole','Piccole “bolle” di membrana.','Trasportano sostanze da un organello all’altro e verso la membrana.',''],
+   [40,27,'Tonoplasto','La membrana che avvolge il vacuolo: un doppio strato di fosfolipidi con proteine, come la membrana plasmatica.','Decide che cosa entra ed esce dal vacuolo. Le sue pompe protoniche aiutano il vacuolo ad accumulare sali e zuccheri, che richiamano acqua: così si crea il turgore.','p. 158'],
+   [58,50,'Vacuolo','Grande sacco delimitato dal tonoplasto e pieno di succo vacuolare. Nelle cellule adulte può occupare fino al 90% del volume.','Fa da magazzino (zuccheri, proteine, acidi, pigmenti…), digerisce (funzione litica) e mantiene il turgore cellulare.','pp. 158-159'],
+   [15,45,'Cloroplasto','Plastidio verde: contiene clorofilla e pile di tilacoidi (grana).','Fa la fotosintesi clorofilliana: con luce, acqua e CO₂ produce zuccheri e libera ossigeno.','p. 160'],
+   [25,52,'Mitocondrio','Organello con doppia membrana; quella interna è ripiegata in creste.','Fa la respirazione cellulare: ricava energia dagli zuccheri usando l’ossigeno.',''],
+   [24,62,'Perossisoma','Piccola vescicola.','Elimina sostanze dannose per la cellula, come l’acqua ossigenata.',''],
+   [64,31,'Ribosomi','Granuli piccolissimi (i puntini viola), liberi nel citoplasma o attaccati al reticolo.','Costruiscono le proteine unendo gli amminoacidi.',''],
+   [83,90,'Citoplasma','Liquido (citosol) che riempie la cellula dentro la membrana, con gli organelli e il citoscheletro.','È l’ambiente in cui avvengono molte reazioni chimiche.','p. 157 (protoplasto = citoplasma + membrana)',{target:[70,76],area:[70,76,20,10]}],
+   [43,95,'Plasmodesma','Ponte di citoplasma che attraversa la parete passando per i fori detti punteggiature.','Mette in comunicazione cellule vicine: acqua e soluti passano per via simplastica.','p. 158',{target:[43,84]}]
+  ]},
+ {id:'membrana', label:'Membrana plasmatica', img:'img/06_membrana_plasmatica.jpg', alt:'Doppio strato di fosfolipidi con proteine',
+  intro:'La membrana plasmatica vista da vicinissimo: un doppio strato di fosfolipidi con proteine immerse, come tessere di un mosaico che si muovono (modello a mosaico fluido).',
+  items:[
+   [4,34,'Fosfolipide','Molecola con una testa che ama l’acqua (idrofila) e due code che la evitano (idrofobe).','È il “mattone” della membrana: tanti fosfolipidi insieme formano un velo continuo.','',{target:[7,45]}],
+   [27,18,'Teste idrofile','Le teste dei fosfolipidi, rivolte verso l’acqua fuori e dentro la cellula.','Stanno a contatto con l’acqua di entrambi i lati.','',{target:[20,39]}],
+   [30,68,'Code idrofobe','Le code dei fosfolipidi, nascoste al centro del doppio strato.','Formano una barriera che l’acqua e le sostanze sciolte non attraversano da sole.','',{target:[30,52]}],
+   [43,22,'Proteina transmembrana a canale','Proteina che attraversa tutto il doppio strato e ha un tunnel al centro (per esempio le acquaporine).','Fa passare acqua o ioni senza spendere energia (trasporto passivo). Così l’acqua arriva al vacuolo.','',{target:[44,52]}],
+   [69,22,'Proteina transmembrana di trasporto','Proteina che attraversa la membrana e cambia forma.','Afferra una sostanza da un lato e la lascia dall’altro, come una porta girevole.','',{target:[69,52]}],
+   [9,78,'Proteina periferica','Proteina appoggiata solo su un lato della membrana.','Aiuta le altre proteine, riceve segnali o si lega al citoscheletro.','',{target:[19,76]}],
+   [96,75,'Doppio strato di fosfolipidi','Due file di fosfolipidi con le code una di fronte all’altra.','Separa l’interno dall’esterno della cellula e decide che cosa passa.','p. 157 (plasmalemma)',{target:[96,55]}]
+  ]},
+ {id:'pompa', label:'Pompa sodio-potassio', img:'img/07_pompa_sodio_potassio.jpg', alt:'Pompa sodio-potassio nella membrana',
+  intro:'Pensa a una barca che imbarca acqua: l’acqua (il sodio) entra da sola e un marinaio (la pompa) la butta fuori con il secchio, facendo fatica (ATP). Fuori il sodio, dentro il potassio: serve a controllare l’acqua, a far entrare il nutrimento e a mandare segnali. È tipica delle cellule animali: nelle piante c’è la pompa protonica (vista successiva).',
+  items:[
+   [50,64,'Pompa sodio-potassio','Proteina transmembrana che lavora come una pompa.','Butta fuori il sodio e fa entrare il potassio (3 Na⁺ fuori, 2 K⁺ dentro per ogni ATP). Così la cellula non si riempie d’acqua, può far entrare zuccheri e, negli animali, mandare segnali nervosi.',''],
+   [40,83,'Ioni sodio (Na⁺) dentro','Ioni sodio nel citoplasma, che la pompa afferra.','Vengono portati fuori anche se fuori ce ne sono già tanti.',''],
+   [40,13,'Ioni sodio (Na⁺) fuori','I 3 Na⁺ appena espulsi.','Il sodio tenuto fuori è come acqua dietro una diga: quando rientra da una porta speciale si porta dietro zuccheri e amminoacidi.',''],
+   [62,10,'Ioni potassio (K⁺) fuori','Ioni potassio all’esterno.','La pompa ne prende 2 a ogni giro.',''],
+   [55,89,'Ioni potassio (K⁺) dentro','I 2 K⁺ portati nel citoplasma.','Dentro la cellula resta tanto potassio.',''],
+   [74,79,'ATP','Molecola che trasporta energia nella cellula.','Si spezza in ADP + P e dà l’energia per far cambiare forma alla pompa.','']
+  ]},
+ {id:'protonica', label:'Pompa protonica', img:'img/08_pompa_protonica.jpg', alt:'Pompa protonica e trasportatore nella membrana di una cellula vegetale',
+  intro:'La pompa delle piante. Con l’ATP butta fuori ioni H⁺ e crea una “diga”; gli H⁺ rientrando da un trasportatore si portano dietro zuccheri e sali. Serve a nutrire la cellula, a riempire il vacuolo (turgore), ad aprire gli stomi e a far crescere la cellula.',
+  items:[
+   [30,70,'Pompa protonica','Proteina transmembrana della membrana plasmatica delle cellule vegetali.','Spendendo ATP butta fuori ioni H⁺. Pompe simili sul tonoplasto spingono H⁺ dentro il vacuolo e lo aiutano ad accumulare sali: così si crea il turgore.',''],
+   [26,86,'Ione H⁺ dentro','Ione idrogeno (protone) nel citoplasma.','Viene afferrato dalla pompa e buttato fuori.',''],
+   [36,12,'Ioni H⁺ fuori','Tanti H⁺ accumulati fuori: l’ambiente diventa acido.','Sono la “diga” della pianta: vogliono rientrare. Rendono anche più morbida la parete, così la cellula può allungarsi.',''],
+   [48,83,'ATP','Molecola che trasporta energia.','Dà alla pompa l’energia per buttare fuori gli H⁺ (trasporto attivo).',''],
+   [67,70,'Trasportatore','Proteina transmembrana che fa passare insieme H⁺ e un’altra sostanza.','Gli H⁺ rientrano e si portano dietro zuccheri come il saccarosio o sali come i nitrati: così la cellula si nutre.',''],
+   [65,89,'Zuccheri e sali entrati','Saccarosio, nitrati e altri sali portati dentro.','Nutrono la cellula; il saccarosio viene caricato nel floema o libro.','p. 160 (floema)']
+  ]},
+ {id:'endo', label:'Endomembrane', img:'img/03_sistema_endomembrane.jpg', alt:'Sistema di endomembrane',
+  intro:'Il sistema di endomembrane: nucleo, reticolo endoplasmatico, apparato di Golgi, vescicole e vacuolo si scambiano continuamente sostanze.',
+  items:[
+   [4,22,'Nucleo e involucro nucleare','Nucleo avvolto da una doppia membrana.','Contiene il DNA; l’involucro separa il nucleo dal citoplasma.',''],
+   [21,33,'Pori nucleari','Aperture nell’involucro nucleare.','Regolano gli scambi tra nucleo e citoplasma.',''],
+   [11,40,'Nucleolo','Zona interna del nucleo.','Prepara le parti dei ribosomi.',''],
+   [36,35,'Reticolo endoplasmatico ruvido','Membrane ripiegate coperte di ribosomi.','Produce proteine; le proteine di riserva possono andare al vacuolo direttamente o passando dal Golgi.','p. 159'],
+   [25,80,'Reticolo endoplasmatico liscio','Tubicini senza ribosomi.','Produce lipidi.',''],
+   [53,23,'Vescicole di trasporto','Bollicine che si staccano dal reticolo.','Portano le sostanze al Golgi.',''],
+   [66,35,'Apparato di Golgi','Pila di sacchetti curvi.','Modifica ulteriormente le proteine, le smista e le impacchetta.','p. 159'],
+   [93,24,'Vescicola e membrana plasmatica','Vescicola che si fonde con la membrana.','Porta le sostanze fuori dalla cellula o verso la parete.',''],
+   [80,91,'Vacuolo e tonoplasto','Grande vacuolo avvolto dalla sua membrana, il tonoplasto.','Riceve sostanze dalle vescicole; fa da magazzino e mantiene il turgore.','pp. 158-159',{target:[91,69],area:[78,83,29,20]}]
+  ]},
+ {id:'parete', label:'Parete e plasmodesmi', img:'img/02_parete_plasmodesmi.jpg', alt:'Pareti di due cellule vicine con plasmodesmi',
+  intro:'Due cellule vicine. Tra le loro pareti c’è la lamella mediana; i plasmodesmi le collegano attraverso le punteggiature.',
+  items:[
+   [10,40,'Vacuolo','Grande vacuolo della cellula.','Magazzino e turgore.',''],
+   [17,15,'Cloroplasto','Plastidio verde.','Fotosintesi.',''],
+   [25,30,'Reticolo endoplasmatico','Tubuli di membrana.','Continua nei plasmodesmi con il desmotubulo.','p. 158'],
+   [35,72,'Membrana plasmatica','Il bordo dorato del protoplasto.','Controlla gli scambi; riveste anche il canale del plasmodesma.',''],
+   [36,15,'Parete primaria','Microfibrille di cellulosa in una matrice di emicellulose, pectine e proteine.','Sostiene e protegge; è impregnata d’acqua e fa passare soluti per via apoplastica.','p. 157-158'],
+   [43,15,'Lamella mediana','Strato di pectina tra le pareti di due cellule.','Fa aderire le cellule vicine. Se funghi o maturazione eccessiva la digeriscono, il tessuto si spappola.','p. 158'],
+   [56,20,'Parete secondaria','Strati aggiunti verso l’interno dopo la crescita, ricchi di cellulosa; possono contenere lignina o suberina.','Rende la parete più rigida (legno) o impermeabile (sughero).','p. 157'],
+   [47,62,'Plasmodesma e punteggiatura','Ponte di citoplasma che passa in un foro della parete (punteggiatura).','Fa passare acqua e soluti da cellula a cellula: via simplastica.','p. 158',{target:[43,51]}],
+   [77,75,'Desmotubulo','Sottile tubulo del reticolo endoplasmatico dentro il plasmodesma.','Collega il reticolo di una cellula con quello della cellula vicina.','p. 158',{target:[73,61]}]
+  ]},
+ {id:'plastidi', label:'Cloroplasto e mitocondrio', img:'img/04_cloroplasto_mitocondrio.jpg', alt:'Cloroplasto e mitocondrio in sezione',
+  intro:'A sinistra un cloroplasto, a destra un mitocondrio. Entrambi hanno doppia membrana, DNA circolare e ribosomi propri.',
+  items:[
+   [7,22,'Doppia membrana del cloroplasto','Membrana esterna e membrana interna.','Separano il cloroplasto dal citoplasma.','p. 159',{target:[4,45]}],
+   [29,22,'Granum (pl. grana)','Pila di tilacoidi, cisterne appiattite.','Sulla membrana dei tilacoidi ci sono clorofilla e fotosistemi: qui avviene la fase luminosa della fotosintesi.','p. 160'],
+   [39,33,'Tilacoidi intergranali o stromatici','Tilacoidi che collegano un granum all’altro attraversando lo stroma.','Uniscono i grana in un unico sistema.','p. 160'],
+   [44,83,'Stroma','Liquido (matrice) all’interno del cloroplasto.','Qui avviene il ciclo di Calvin: la CO₂ entra nella gliceraldeide-3-fosfato e si formano gli zuccheri.','p. 160',{target:[37,73],area:[37,72,17,16]}],
+   [15,62,'Granulo di amido primario','Deposito di amido dentro il cloroplasto.','Riserva temporanea: di notte diventa glucosio e saccarosio.','p. 160'],
+   [32,66,'DNA circolare del cloroplasto','Molecola di DNA ad anello.','Contiene alcune istruzioni proprie del plastidio.','p. 159'],
+   [55,62,'Membrana esterna del mitocondrio','Involucro esterno liscio.','Separa il mitocondrio dal citoplasma.',''],
+   [72,30,'Creste mitocondriali','Pieghe della membrana interna.','Aumentano la superficie dove si produce energia.',''],
+   [68,73,'Matrice mitocondriale','Interno del mitocondrio.','Qui avvengono molte reazioni della respirazione.','',{target:[73,50],area:[72,50,17,16]}],
+   [80,50,'DNA circolare del mitocondrio','Molecola di DNA ad anello.','Contiene alcune istruzioni proprie del mitocondrio.','']
+  ]},
+ {id:'turgore', label:'Turgore e plasmolisi', img:'img/05_turgore_plasmolisi.jpg', alt:'Cellula plasmolizzata, flaccida e turgida',
+  intro:'La stessa cellula con quantità diverse di acqua nel vacuolo.',
+  items:[
+   [16,88,'Cellula plasmolizzata','Il vacuolo ha perso molta acqua e il protoplasto si stacca dalla parete (plasmolisi).','Succede se la cellula sta in una soluzione molto concentrata, per esempio in acqua salata.','Attività pratica 1, pp. 264-265',{target:[16,50],area:[16,50,24,55]}],
+   [50,88,'Cellula flaccida','Il vacuolo ha poca acqua e non preme sulla parete.','Foglie e fusti erbacei si afflosciano: è l’appassimento, reversibile. L’avvizzimento invece è la morte delle cellule, irreversibile.','p. 159',{target:[50,50],area:[50,50,24,55]}],
+   [83,88,'Cellula turgida','Il vacuolo è pieno d’acqua e preme sulla parete, che resiste.','Questo equilibrio è il turgore cellulare: rende rigidi fusti erbacei e foglie.','p. 159',{target:[83,50],area:[83,50,24,55]}]
+  ]}
+];
+
+let view = VIEWS[0], current = -1, mode = 'explore', quiz = null;
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let effectsOn = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function speak(text){
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const voice = new SpeechSynthesisUtterance(text);
+  voice.lang = 'it-IT'; voice.rate = .88; voice.pitch = 1;
+  speechSynthesis.speak(voice);
+}
+function addListen(text){
+  const b = $('listen'); if (!b) return;
+  if (!('speechSynthesis' in window)){ b.disabled = true; b.textContent = '🔇 Lettura non disponibile'; return; }
+  b.onclick = () => speak(text);
+}
+function burst(el, good){
+  if (!effectsOn || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const r = el.getBoundingClientRect(), icons = good ? ['✨','🎃','🍬','⭐'] : ['🦇','💨','🕸️'];
+  for (let i=0;i<10;i++){
+    const p=document.createElement('span'); p.className='burst'; p.textContent=icons[i%icons.length];
+    p.style.left=(r.left+r.width/2)+'px'; p.style.top=(r.top+r.height/2)+'px';
+    p.style.setProperty('--dx',((i%5)-2)*(28+Math.random()*18)+'px');
+    p.style.setProperty('--dy',(-35-Math.random()*95)+'px');
+    document.body.appendChild(p); setTimeout(()=>p.remove(),1100);
+  }
+}
+
+function renderViews(){
+  $('views').innerHTML = VIEWS.map(v => `<button data-v="${v.id}" aria-pressed="${v===view}">${esc(v.label)}</button>`).join('');
+  $('views').querySelectorAll('button').forEach(b => b.onclick = () => { view = VIEWS.find(v => v.id === b.dataset.v); current = -1; if (mode==='quiz') startQuiz(); render(); });
+}
+function render(){
+  renderViews();
+  const img = $('img'); img.src = view.img; img.alt = view.alt;
+  const fig = $('figure');
+  fig.querySelectorAll('.pin,.annotation-layer').forEach(p => p.remove());
+  const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('class','annotation-layer'); svg.setAttribute('viewBox','0 0 100 100'); svg.setAttribute('preserveAspectRatio','none');
+  fig.appendChild(svg);
+  view.items.forEach((it, i) => {
+    const meta = it[6] || {}, pin = meta.pin || [it[0],it[1]], target = meta.target;
+    if (target){
+      const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+      line.setAttribute('x1',pin[0]); line.setAttribute('y1',pin[1]); line.setAttribute('x2',target[0]); line.setAttribute('y2',target[1]); svg.appendChild(line);
+      const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      dot.setAttribute('cx',target[0]); dot.setAttribute('cy',target[1]); dot.setAttribute('r','1.15'); svg.appendChild(dot);
+    }
+    if (meta.area){
+      const area = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+      area.setAttribute('cx',meta.area[0]); area.setAttribute('cy',meta.area[1]); area.setAttribute('rx',meta.area[2]/2); area.setAttribute('ry',meta.area[3]/2); svg.appendChild(area);
+    }
+    const b = document.createElement('button');
+    b.className = 'pin'; b.style.left = pin[0] + '%'; b.style.top = pin[1] + '%';
+    b.innerHTML = `<span aria-hidden="true">${i+1}</span>`;
+    b.setAttribute('aria-label', mode === 'quiz' ? 'Punto ' + (i + 1) : it[2]);
+    if (i === current && mode === 'explore') b.setAttribute('aria-current', 'true');
+    b.onclick = () => mode === 'explore' ? select(i) : answer(i, b);
+    fig.appendChild(b);
+  });
+  $('stage').classList.toggle('quizmode', mode === 'quiz');
+  $('list').innerHTML = view.items.map((it, i) => `<li><button data-i="${i}" ${i===current?'aria-current="true"':''}><span>${i+1}</span>${esc(it[2])}</button></li>`).join('');
+  $('list').querySelectorAll('button').forEach(b => b.onclick = () => { if (mode !== 'explore') setMode('explore'); select(+b.dataset.i); });
+  mode === 'explore' ? renderPanel() : renderQuiz();
+}
+function select(i){ current = i; render(); }
+function renderPanel(){
+  if (current < 0){
+    const spoken = `${view.label}. ${view.intro}. Tocca una zucca numerata o un nome nel grimorio.`;
+    $('panel').innerHTML = `<p class="eyebrow">${esc(view.label)}</p><h2>Scegli una zucca</h2><p>${esc(view.intro)}</p><p class="hint">Tocca una zucca sull’immagine o un nome nel grimorio qui sotto.</p><div class="panel-actions"><button class="btn listen" id="listen">🔊 Ascolta</button></div>`;
+    addListen(spoken);
+    return;
+  }
+  const it = view.items[current];
+  $('panel').innerHTML = `<p class="eyebrow">${current+1} · ${esc(view.label)}</p><h2>${esc(it[2])}</h2>
+   <div class="row"><b>Che cos’è</b><p>${esc(it[3])}</p></div>
+   <div class="row"><b>A cosa serve</b><p>${esc(it[4])}</p></div>
+   ${it[5] ? `<p class="book">Sul libro: Viridis, ${esc(it[5])}</p>` : ''}
+   <div class="panel-actions"><button class="btn listen" id="listen">🔊 Ascolta</button></div>`;
+  addListen(`${it[2]}. Che cos'è. ${it[3]}. A cosa serve. ${it[4]}`);
+}
+function startQuiz(){
+  const order = view.items.map((_, i) => i).sort(() => Math.random() - .5);
+  quiz = {order, k:0, right:0, done:new Set(), fb:null};
+}
+function renderQuiz(){
+  if (!quiz) startQuiz();
+  if (quiz.k >= quiz.order.length){
+    $('panel').innerHTML = `<p class="eyebrow">Sfida da brivido · ${esc(view.label)}</p><h2>Incantesimo completato!</h2><p class="score">Risposte giuste al primo colpo: ${quiz.right} su ${quiz.order.length}</p><button class="btn" id="again">🎃 Ricomincia</button>`;
+    $('again').onclick = () => { startQuiz(); render(); };
+    return;
+  }
+  const target = view.items[quiz.order[quiz.k]];
+  $('panel').innerHTML = `<p class="eyebrow">Sfida da brivido · ${esc(view.label)}</p>
+   <p class="quiz-q">Nel laboratorio infestato, dov’è: <b>${esc(target[2])}</b>?</p>
+   <p class="hint">Tocca la zucca giusta sull’immagine.</p>
+   ${quiz.fb ? `<p class="feedback ${quiz.fb.ok?'ok':'ko'}">${esc(quiz.fb.text)}</p>` : ''}
+   <p class="score">Domanda ${quiz.k+1} di ${quiz.order.length} · giuste: ${quiz.right}</p>
+   <div class="panel-actions"><button class="btn listen" id="listen">🔊 Ascolta la domanda</button></div>`;
+  addListen(`Dov'è ${target[2]}? Tocca la zucca giusta sull'immagine.`);
+}
+function answer(i, el){
+  const t = quiz.order[quiz.k];
+  if (i === t){
+    burst(el, true);
+    if (!quiz.missed) quiz.right++;
+    quiz.fb = {ok:true, text:'Incantesimo riuscito! ' + view.items[t][2] + ': ' + view.items[t][4]};
+    quiz.k++; quiz.missed = false;
+  } else {
+    burst(el, false);
+    quiz.missed = true;
+    quiz.fb = {ok:false, text:'Non ancora: hai toccato ' + view.items[i][2] + '. Riprova con calma.'};
+  }
+  render();
+}
+function setMode(m){
+  mode = m; $('m-explore').setAttribute('aria-pressed', m==='explore'); $('m-quiz').setAttribute('aria-pressed', m==='quiz');
+  if (m === 'quiz') startQuiz();
+  render();
+}
+$('m-explore').onclick = () => setMode('explore');
+$('m-quiz').onclick = () => setMode('quiz');
+$('motion').onclick = () => {
+  effectsOn = !effectsOn;
+  document.documentElement.dataset.motion = effectsOn ? 'on' : 'off';
+  $('motion').setAttribute('aria-pressed', effectsOn);
+  $('motion').textContent = effectsOn ? '✨ Effetti attivi' : '🌙 Effetti fermi';
+};
+if (!effectsOn){ document.documentElement.dataset.motion='off'; $('motion').setAttribute('aria-pressed','false'); $('motion').textContent='🌙 Effetti fermi'; }
+render();
+</script>
+
+</html>

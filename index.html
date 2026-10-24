@@ -93,6 +93,31 @@ nav.views button{min-height:46px;font-size:16px;border:2px solid var(--line);bac
 button:focus-visible{outline:4px solid #E5FF73!important;outline-offset:3px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 :root[data-motion="off"] *,:root[data-motion="off"] *::before,:root[data-motion="off"] *::after{animation:none!important;transition:none!important}
+
+/* Il tema continua in tutto il gioco, non solo nell'intestazione. */
+header{position:relative;padding:16px 18px 18px;border:2px solid #67337F;border-radius:18px;background:linear-gradient(115deg,rgba(40,13,55,.92),rgba(20,8,28,.72));box-shadow:inset 0 -8px 18px rgba(255,106,0,.07),0 0 28px rgba(106,36,143,.2)}
+header::after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:13px;background:linear-gradient(90deg,transparent,#FF6A00 15%,#B8FF39 30%,#8E43B0 55%,#FF6A00 82%,transparent);clip-path:polygon(0 0,100% 0,100% 35%,95% 35%,93% 100%,90% 35%,76% 35%,74% 75%,71% 35%,48% 35%,46% 92%,43% 35%,25% 35%,23% 68%,20% 35%,0 35%);opacity:.7}
+nav.views{padding:13px;border:2px solid #4D2862;border-radius:16px;background:rgba(11,5,18,.76);box-shadow:inset 0 0 24px rgba(118,49,150,.16)}
+nav.views button{position:relative;overflow:hidden}nav.views button::after{content:"";position:absolute;inset:auto 8px 4px;height:2px;background:linear-gradient(90deg,transparent,var(--pin),transparent);opacity:.5}
+.view-icon{font-size:1.1em;margin-right:6px;filter:drop-shadow(0 0 5px rgba(255,138,31,.7))}
+.stage{position:relative;padding:13px;border:2px solid #3E2250;border-radius:22px;background:linear-gradient(135deg,rgba(25,10,34,.92),rgba(8,18,13,.8));box-shadow:0 14px 45px rgba(0,0,0,.38)}
+.stage::before{content:"LABORATORIO INFESTATO";position:absolute;z-index:5;top:-14px;left:34px;padding:2px 13px;border:2px solid #7E438F;border-radius:999px;background:#12091A;color:#E9D8F5;font-size:12px;font-weight:800;letter-spacing:.16em;box-shadow:0 0 12px rgba(199,138,255,.3)}
+.figure img{filter:saturate(1.13) contrast(1.04) sepia(.05)}
+.figure{isolation:isolate}.figure::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;box-shadow:inset 0 0 42px 10px rgba(41,4,58,.55);background:linear-gradient(135deg,rgba(115,30,140,.1),transparent 30%,transparent 75%,rgba(255,91,0,.11))}
+#panel{position:relative;overflow:hidden;border-color:#7A3E93;background:radial-gradient(circle at 92% 12%,rgba(255,106,0,.13),transparent 24%),linear-gradient(155deg,#251331,#120A1C)}
+#panel::before{content:"☠";position:absolute;right:15px;top:5px;font-size:54px;color:#C997E1;opacity:.1;transform:rotate(9deg);pointer-events:none}
+#panel .eyebrow::before{content:"🕯️ ";filter:drop-shadow(0 0 6px #FF7A16)}
+.spell{margin:0;padding:9px 12px;border:1px dashed #B26CCF;border-radius:9px;background:#30143A;color:#F3C8FF;font-weight:700}
+.row{position:relative;padding:11px 13px 11px 18px;border:1px solid #5E3374;border-radius:10px;background:rgba(10,5,15,.38)}.row::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;border-radius:10px 0 0 10px;background:linear-gradient(#FF7619,#9E3DD1)}
+.row b{color:#FFC36D}.book{border:1px dashed #705083;border-radius:9px;padding:9px 11px;background:rgba(80,39,101,.2)}
+.card:has(.list){position:relative;border-color:#72408C;background:radial-gradient(circle at 10% 0,rgba(135,47,167,.17),transparent 24%),linear-gradient(150deg,#21112D,#100918)}
+.card:has(.list)::after{content:"🦴  🕯️  🦴";position:absolute;right:22px;top:13px;opacity:.42;letter-spacing:.35em;pointer-events:none}
+.list{gap:10px}.list button{position:relative;border-radius:18px 18px 6px 6px;background:linear-gradient(#291638,#160D20);box-shadow:inset 0 -5px 0 rgba(0,0,0,.18)}.list button:hover{border-color:#FF7818;background:linear-gradient(#3A1B43,#24102C);transform:translateY(-2px)}.list button[aria-current="true"]{border-color:var(--leaf);box-shadow:0 0 14px rgba(184,255,57,.25),inset 0 -5px 0 rgba(0,0,0,.18)}
+.list button span{background:linear-gradient(90deg,#D94C00,#FF8A00 48%,#D94C00);border:2px solid #FFE6BF;box-shadow:0 0 7px rgba(255,106,0,.45)}
+.legend{position:relative;border:2px solid #6D3D85;border-left:8px solid var(--pin);background:linear-gradient(90deg,#2B1030,#151020)}.legend::after{content:"🕸️";position:absolute;right:6px;top:-10px;font-size:38px;opacity:.35;filter:grayscale(1) brightness(2)}
+.feedback{border:2px solid currentColor;box-shadow:0 0 14px rgba(255,255,255,.08)}
+footer{padding:16px 18px;border-top:2px dashed #74418C;background:rgba(9,5,18,.58);border-radius:12px}footer::before{content:"🎃  🦇  🧪  ";letter-spacing:.25em}
+@media (max-width:600px){header{padding:14px}.stage{padding:8px}.stage::before{left:18px}.spooky-sky{display:none}.card:has(.list)::after{display:none}}
 </style>
 
 <div class="wrap">
@@ -235,6 +260,17 @@ let view = VIEWS[0], current = -1, mode = 'explore', quiz = null;
 const $ = id => document.getElementById(id);
 const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let effectsOn = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+const ICONS = {panorama:'🎃',membrana:'🧬',pompaNaK:'⚡',pompaH:'🔋',endomembrane:'🧪',parete:'🕸️',plastidi:'🌿',turgore:'💧'};
+const VIBES = {
+  panorama:'La mappa completa del laboratorio vivente.',
+  membrana:'Il confine selettivo: decide chi può varcare la soglia.',
+  pompaNaK:'Uno scambio elettrico da vero laboratorio del terrore.',
+  pompaH:'La forza nascosta dei protoni mette in moto i trasporti.',
+  endomembrane:'Corridoi, sacche e vescicole: la rete segreta della cellula.',
+  parete:'Mura robuste attraversate da passaggi invisibili.',
+  plastidi:'Energia dalla luce e dagli zuccheri: due antiche centrali.',
+  turgore:'Tre cellule, tre diversi equilibri dell’acqua.'
+};
 
 function speak(text){
   if (!('speechSynthesis' in window)) return;
@@ -261,7 +297,7 @@ function burst(el, good){
 }
 
 function renderViews(){
-  $('views').innerHTML = VIEWS.map(v => `<button data-v="${v.id}" aria-pressed="${v===view}">${esc(v.label)}</button>`).join('');
+  $('views').innerHTML = VIEWS.map(v => `<button data-v="${v.id}" aria-label="${esc(v.label)}" aria-pressed="${v===view}"><span class="view-icon" aria-hidden="true">${ICONS[v.id]||'🦇'}</span>${esc(v.label)}</button>`).join('');
   $('views').querySelectorAll('button').forEach(b => b.onclick = () => { view = VIEWS.find(v => v.id === b.dataset.v); current = -1; if (mode==='quiz') startQuiz(); render(); });
 }
 function render(){
@@ -300,8 +336,8 @@ function render(){
 function select(i){ current = i; render(); }
 function renderPanel(){
   if (current < 0){
-    const spoken = `${view.label}. ${view.intro}. Tocca una zucca numerata o un nome nel grimorio.`;
-    $('panel').innerHTML = `<p class="eyebrow">${esc(view.label)}</p><h2>Scegli una zucca</h2><p>${esc(view.intro)}</p><p class="hint">Tocca una zucca sull’immagine o un nome nel grimorio qui sotto.</p><div class="panel-actions"><button class="btn listen" id="listen">🔊 Ascolta</button></div>`;
+    const spoken = `${view.label}. ${VIBES[view.id]} ${view.intro}. Tocca una zucca numerata o un nome nel grimorio.`;
+    $('panel').innerHTML = `<p class="eyebrow">${esc(view.label)}</p><h2>Scegli una zucca</h2><p class="spell">👻 ${esc(VIBES[view.id])}</p><p>${esc(view.intro)}</p><p class="hint">Tocca una zucca sull’immagine o un nome nel grimorio qui sotto.</p><div class="panel-actions"><button class="btn listen" id="listen">🔊 Ascolta</button></div>`;
     addListen(spoken);
     return;
   }

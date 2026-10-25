@@ -69,6 +69,8 @@ nav.views button[aria-pressed="true"]{border-color:var(--leaf);background:var(--
 .btn{font:inherit;font-weight:800;border:0;background:var(--leaf);color:var(--bg);padding:10px 16px;border-radius:10px;cursor:pointer;align-self:start}
 .hint{color:var(--muted);font-size:15px;margin:0}
 footer{color:var(--muted);font-size:14px}
+.institution{display:grid;grid-template-columns:42px minmax(0,1fr);align-items:center;gap:10px;padding:7px 11px;border:1px solid #643779;border-radius:13px;background:linear-gradient(100deg,rgba(29,11,42,.9),rgba(49,18,36,.82));color:#CDBADB;line-height:1.3;box-shadow:0 0 14px rgba(184,255,57,.08)}
+.institution img{width:38px;height:38px;object-fit:contain;filter:brightness(0) saturate(100%) invert(65%) sepia(96%) saturate(2697%) hue-rotate(341deg) brightness(103%) contrast(103%) drop-shadow(0 0 5px rgba(255,138,31,.35))}.institution b{color:#FFF2BF;font-size:13px}.institution small{display:block;margin-top:1px;font-size:11px}
 
 /* Edizione Halloween: forte nell'atmosfera, calma nei movimenti e leggibile. */
 :root{--bg:#090512;--surface:#181024;--ink:#FFF2BF;--text:#F8F0FF;--muted:#D7C4E8;--line:#663B82;--leaf:#B8FF39;--leaf-soft:#2B173D;--pin:#FF6A00;--pin-ring:#FFF5D6;--ok:#B8FF39;--ok-soft:#20360F;--ko:#FF7396;--ko-soft:#421328;--display:'Creepster','Trebuchet MS',fantasy;--body:'Atkinson Hyperlegible',Arial,sans-serif;color-scheme:dark}
@@ -90,6 +92,12 @@ body::before{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none
 .spooky-sky{position:absolute;inset:-18px 0 auto;pointer-events:none;z-index:0;color:#C78AFF;font-size:clamp(24px,4vw,48px);letter-spacing:.3em;display:flex;justify-content:flex-end;gap:clamp(18px,4vw,54px);opacity:.8}
 .spooky-sky span{display:inline-block;filter:drop-shadow(0 0 8px #9A42FF);animation:float 4s ease-in-out infinite alternate}.spooky-sky span:nth-child(2){animation-delay:-1.7s}.spooky-sky span:nth-child(3){animation-delay:-3s}
 @keyframes float{to{transform:translateY(12px) rotate(5deg)}}
+.flyer,.watcher,.spooky-sky span{transition:scale .18s ease,filter .18s ease,opacity .18s ease}
+.flyer.spooked{scale:1.7;animation-duration:2.2s!important;opacity:1;filter:drop-shadow(0 0 16px #FF8A1F) brightness(1.25)}
+.watcher.spooked{scale:1.5;opacity:1;filter:drop-shadow(0 0 22px #F5E9FF) brightness(1.2)}
+.watcher::after{content:"BOO!";position:absolute;right:82%;top:-8px;padding:2px 8px;border:2px solid #C78AFF;border-radius:999px;background:#170A21;color:#FFF2BF;font:700 13px/1.4 var(--body);letter-spacing:.08em;opacity:0;transform:translateX(8px) scale(.7);transition:opacity .16s ease,transform .16s ease}
+.watcher.spooked::after{opacity:1;transform:translateX(0) scale(1)}
+.spooky-sky span.spooked{scale:1.45;filter:drop-shadow(0 0 16px #FF8A1F) brightness(1.35)}
 h1{font-weight:400;font-size:clamp(38px,6vw,66px);color:#FF8A1F;letter-spacing:.035em;text-shadow:0 0 8px #FF6A00,0 3px 0 #4E1766}
 .pumpkin-line{color:var(--ink);font-weight:700;margin:.25rem 0 0}.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-end}
 .tool{min-height:46px;font:inherit;font-weight:700;border:2px solid var(--line);background:#21102F;color:var(--text);padding:8px 14px;border-radius:12px;cursor:pointer}.tool:hover,.tool:focus-visible{border-color:var(--leaf);box-shadow:0 0 14px rgba(184,255,57,.35)}
@@ -141,6 +149,7 @@ footer{padding:16px 18px;border-top:2px dashed #74418C;background:rgba(9,5,18,.5
   <i class="bubble b1"></i><i class="bubble b2"></i><i class="bubble b3"></i><i class="bubble b4"></i>
 </div>
 <div class="wrap">
+  <div class="institution" aria-label="Intestazione istituzionale"><img src="img/logo_scuola_8mkl.png" alt="Logo IIS 8 Marzo – K. Lorenz"><span><b>IIS “8 Marzo – K. Lorenz”, Mirano</b><small>Dirigente scolastica: dott.ssa Roberta Gasparini · Autore: prof. Gianluca Simonetti</small></span></div>
   <div class="spooky-sky" aria-hidden="true"><span>🦇</span><span>👻</span><span>🦇</span></div>
   <header>
     <div>
@@ -171,7 +180,7 @@ footer{padding:16px 18px;border-top:2px dashed #74418C;background:rgba(9,5,18,.5
 
   <p class="legend"><b>Come leggere la mappa:</b> la linea unisce la zucca alla struttura; il contorno tratteggiato indica una zona diffusa, come citoplasma, stroma o matrice.</p>
 
-  <footer><b>La cellula stregata · edizione Halloween</b> · App di Gianluca Simonetti · IIS “8 Marzo – K. Lorenz”, Mirano · Agrobiologia, classi prime.<br>Membrana e pompa sodio-potassio: approfondimento di Biologia; nelle cellule vegetali la pompa principale è la pompa protonica (H⁺). Riferimento: Viridis, Modulo 3 – Botanica generale e sistematica, Unità 1 “La cellula e i tessuti vegetali”, pp. 155-161. Illustrazioni del percorso introduttivo.</footer>
+  <footer><b>La cellula stregata · edizione Halloween</b> · Autore: prof. Gianluca Simonetti · Agrobiologia, classi prime.<br>Membrana e pompa sodio-potassio: approfondimento di Biologia; nelle cellule vegetali la pompa principale è la pompa protonica (H⁺). Riferimento: Viridis, Modulo 3 – Botanica generale e sistematica, Unità 1 “La cellula e i tessuti vegetali”, pp. 155-161. Illustrazioni del percorso introduttivo.</footer>
 </div>
 
 <script>
@@ -193,7 +202,7 @@ const VIEWS = [
    [25,52,'Mitocondrio','Organello con doppia membrana; quella interna è ripiegata in creste.','Fa la respirazione cellulare: ricava energia dagli zuccheri usando l’ossigeno.',''],
    [24,62,'Perossisoma','Piccola vescicola.','Elimina sostanze dannose per la cellula, come l’acqua ossigenata.',''],
    [64,31,'Ribosomi','Granuli piccolissimi (i puntini viola), liberi nel citoplasma o attaccati al reticolo.','Costruiscono le proteine unendo gli amminoacidi.',''],
-   [83,90,'Citoplasma','Liquido (citosol) che riempie la cellula dentro la membrana, con gli organelli e il citoscheletro.','È l’ambiente in cui avvengono molte reazioni chimiche.','p. 157 (protoplasto = citoplasma + membrana)',{target:[70,76],area:[70,76,20,10]}],
+   [48,78,'Citoplasma','Parte della cellula compresa tra la membrana plasmatica e il nucleo: comprende il citosol, gli organelli e il citoscheletro.','Sostiene e contiene gli organelli ed è l’ambiente in cui avvengono molte reazioni chimiche.','p. 157 (protoplasto = contenuto vivente racchiuso dal plasmalemma)',{area:[55,77,35,11]}],
    [43,95,'Plasmodesma','Ponte di citoplasma che attraversa la parete passando per i fori detti punteggiature.','Mette in comunicazione cellule vicine: acqua e soluti passano per via simplastica.','p. 158',{target:[43,84]}]
   ]},
  {id:'membrana', label:'Membrana plasmatica', img:'img/06_membrana_plasmatica.jpg', alt:'Doppio strato di fosfolipidi con proteine',
@@ -417,6 +426,25 @@ $('motion').onclick = () => {
   $('motion').textContent = effectsOn ? '✨ Effetti attivi' : '🌙 Effetti fermi';
 };
 if (!effectsOn){ document.documentElement.dataset.motion='off'; $('motion').setAttribute('aria-pressed','false'); $('motion').textContent='🌙 Effetti fermi'; }
+
+// Fantasmi e pipistrelli reagiscono quando il puntatore si avvicina, senza intercettare i clic del gioco.
+const spookyActors = [...document.querySelectorAll('.flyer,.watcher,.spooky-sky span')];
+let proximityFrame = 0;
+addEventListener('pointermove', event => {
+  if (proximityFrame) return;
+  proximityFrame = requestAnimationFrame(() => {
+    proximityFrame = 0;
+    if (!effectsOn || matchMedia('(prefers-reduced-motion: reduce)').matches){
+      spookyActors.forEach(actor => actor.classList.remove('spooked'));
+      return;
+    }
+    spookyActors.forEach(actor => {
+      const box = actor.getBoundingClientRect();
+      const distance = Math.hypot(event.clientX - (box.left + box.width / 2), event.clientY - (box.top + box.height / 2));
+      actor.classList.toggle('spooked', distance < 115);
+    });
+  });
+}, {passive:true});
 render();
 </script>
 
